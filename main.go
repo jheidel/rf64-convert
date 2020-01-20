@@ -23,6 +23,10 @@ func main() {
 	}
 	defer in.Close()
 
+	if *input == *output {
+		log.Fatalf("Overwriting input is not supported")
+	}
+
 	out, err := convert.NewOutputFile(*output)
 	if err != nil {
 		log.Fatalf("%v", err)
