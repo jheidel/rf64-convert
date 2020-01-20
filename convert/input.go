@@ -11,7 +11,6 @@ import (
 
 type InputFile struct {
 	Chunks     map[string][]byte
-	DataSize   uint64
 	DataReader io.Reader
 
 	file *os.File
@@ -24,10 +23,6 @@ func OpenInput(path string) (*InputFile, error) {
 	log.Printf("Loading input %q", path)
 
 	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	stat, err := file.Stat()
 	if err != nil {
 		return nil, err
 	}
@@ -65,26 +60,8 @@ func OpenInput(path string) (*InputFile, error) {
 		cm[t] = cb
 	}
 
-	// Get current offset into the file.
-	dataOffset, err := file.Seek(0, 1)
-	if err != nil {
-		return nil, err
-	}
-
-	dataBytes := uint64(stat.Size()) - uint64(dataOffset)
-
-	log.Printf("Offset from header is %d, file size is %d final is %d", dataOffset, stat.Size(), dataBytes)
-
-	// TODO remove me.
-	auxi, err := DecodeUTF16(cm["auxi"])
-	if err != nil {
-		return nil, err
-	}
-	log.Printf("auxi %q", auxi)
-
 	return &InputFile{
 		Chunks:     cm,
-		DataSize:   dataBytes,
 		DataReader: reader,
 
 		file: file,
