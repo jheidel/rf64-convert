@@ -3,11 +3,29 @@
 A utility for converting RIFF WAV files containing IQ data 
 [produced by gnuradio](https://wiki.gnuradio.org/index.php/Wav_File_Sink)
 into
-[RF64](https://en.wikipedia.org/wiki/RF64) WAV files for use with
+[RF64](https://en.wikipedia.org/wiki/RF64) WAV files
+([spec](https://tech.ebu.ch/docs/tech/tech3306v1_0.pdf)) for use with
 [SDR-Radio Console](https://www.sdr-radio.com/console).
 
 --
 
+The standard RIFF WAV format has a file size limitation of 2 GiB because the
+size of the `data` chunk is stored within the file as a 32-bit integer. SDR IQ
+recordings can easily exceed this restriction due to high sample rates.
+
+The gnuradio WAV Sink will generate RIFF WAV files with a standard header,
+followed by an unrestricted data payload. However, the size information in the
+final file may not be correct due to integer overflow, and some tools will fail
+to load the file due to the incorrect length information. From my experiments,
+SDR-Radio Console will end up showing an arbitrary length for these recordings
+and will not play the entire file.
+
+Fortunately, SDR-Radio Console supports the RF64 WAV format which handles WAV
+files up to 16 EiB. This tool implements conversion to the RF64 WAV file format
+by rewriting the WAV file header with a RF64 header and corrected size
+information.
+
+--
 
 First you'll need a WAV file containing IQ data, for instance from a gnuradio
 flow graph like this:
@@ -19,8 +37,19 @@ logger running gnuradio.
 
 Then run the conversion:
 
-```
-go run main.go --input=[path to gnuradio input WAV] --output=[path to output WAV]
+```bash
+# Install golang
+sudo apt install golang
+
+# Fetch repo
+git clone https://github.com/jheidel/rf64-convert.git ~/go/src/rf64-convert
+cd ~/go/src/rf64-convert
+
+# Build
+go build
+
+# Convert
+./rf64-convert --input=[path to gnuradio input WAV] --output=[path to output WAV]
 ```
 
 The input is assumed to be a RIFF WAV file which contains a standard header,
