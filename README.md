@@ -1,5 +1,7 @@
 # RIFF to RF64 WAV Converter
 
+[![Build Status](https://travis-ci.org/jheidel/rf64-convert.svg?branch=master)](https://travis-ci.org/jheidel/rf64-convert)
+
 A utility for converting RIFF WAV files containing IQ data 
 [produced by gnuradio](https://wiki.gnuradio.org/index.php/Wav_File_Sink)
 into

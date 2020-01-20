@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"rf64-convert/convert"
+	"github.com/jheidel/rf64-convert/convert"
 )
 
 var (
