@@ -41,11 +41,11 @@ Then run the conversion:
 
 ```bash
 # Install golang
-sudo apt install golang
+sudo apt update && sudo apt install golang
 
 # Fetch repo
-git clone https://github.com/jheidel/rf64-convert.git ~/go/src/rf64-convert
-cd ~/go/src/rf64-convert
+git clone https://github.com/jheidel/rf64-convert.git ~/go/src/github.com/jheidel/rf64-convert
+cd ~/go/src/github.com/jheidel/rf64-convert
 
 # Build
 go build

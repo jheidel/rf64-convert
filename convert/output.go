@@ -2,11 +2,13 @@ package convert
 
 import (
 	"bytes"
+	"context"
 	"encoding/binary"
 	"errors"
 	"io"
 	"log"
 	"os"
+	"sync"
 	"time"
 )
 
@@ -130,9 +132,31 @@ func (f *OutputFile) CopyFrom(in *InputFile) error {
 	cr := &countingReader{
 		Reader: in.DataReader,
 	}
+	// Write periodic progress updates to log
+	ctx, cancel := context.WithCancel(context.Background())
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		start := time.Now()
+		t := time.NewTicker(10 * time.Second)
+		for ctx.Err() == nil {
+			select {
+			case <-t.C:
+				sec := uint64(time.Now().Sub(start) / time.Second)
+				bw := cr.Count / sec
+				log.Printf("Copying data chunk... [copied %s, avg speed %s/s]", humanize(cr.Count), humanize(bw))
+			case <-ctx.Done():
+				return
+			}
+		}
+	}()
+	// Start the long-running transfer
 	if _, err := io.Copy(f.file, cr); err != nil {
 		return err
 	}
+	cancel()
+	wg.Wait()
 	log.Printf("Finished copy.")
 
 	// Go back and edit ds64 chunk with corrected size information
