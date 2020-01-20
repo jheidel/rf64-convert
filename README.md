@@ -37,7 +37,7 @@ flow graph like this:
 In my case, the IQ data comes from a headless Raspberry Pi 3 + AirSpy data
 logger running gnuradio.
 
-Then run the conversion:
+Then run the conversion (note that the commands below assume Ubuntu 18.04):
 
 ```bash
 # Install golang and git
