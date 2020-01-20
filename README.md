@@ -40,12 +40,12 @@ logger running gnuradio.
 Then run the conversion:
 
 ```bash
-# Install golang
-sudo apt install golang
+# Install golang and git
+sudo apt update && sudo apt install golang git
 
 # Fetch repo
-git clone https://github.com/jheidel/rf64-convert.git ~/go/src/rf64-convert
-cd ~/go/src/rf64-convert
+git clone https://github.com/jheidel/rf64-convert.git ~/go/src/github.com/jheidel/rf64-convert
+cd ~/go/src/github.com/jheidel/rf64-convert
 
 # Build
 go build
@@ -53,6 +53,12 @@ go build
 # Convert
 ./rf64-convert --input=[path to gnuradio input WAV] --output=[path to output WAV]
 ```
+
+Alternatively, download a pre-built binary from
+[GitHub releases](https://github.com/jheidel/rf64-convert/releases). A Docker
+image is also available from
+[Docker Hub](https://hub.docker.com/r/jheidel/rf64-convert) which has the
+binary installed as `/bin/rf64-convert`.
 
 The input is assumed to be a RIFF WAV file which contains a standard header,
 followed by a data chunk which continues to the end of the file. The converter
