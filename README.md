@@ -2,12 +2,16 @@
 
 [![Build Status](https://travis-ci.org/jheidel/rf64-convert.svg?branch=master)](https://travis-ci.org/jheidel/rf64-convert)
 
-A utility for converting RIFF WAV files containing IQ data 
+A command-line utility for converting RIFF WAV files containing IQ data 
 [produced by gnuradio](https://wiki.gnuradio.org/index.php/Wav_File_Sink)
 into
 [RF64](https://en.wikipedia.org/wiki/RF64) WAV files
 ([spec](https://tech.ebu.ch/docs/tech/tech3306v1_0.pdf)) for use with
 [SDR-Radio Console](https://www.sdr-radio.com/console).
+
+A pre-built binary is available for both 
+[Windows and Linux](https://github.com/jheidel/rf64-convert/releases),
+or you can easily compile your own with instructions below.
 
 --
 
