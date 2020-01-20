@@ -64,11 +64,11 @@ func (r *countingReader) Read(p []byte) (int, error) {
 
 func (f *OutputFile) CopyFrom(in *InputFile) error {
 	// We could add 'auxi' to replicate SDRConsole's internal format.
-	//   auxi, err := EncodeUTF16(TestAuxi)
+	//   chunk, err := auxi.EncodeUTF16(auxi.TestData)
 	//   if err != nil {
 	//   	return err
 	//   }
-	//   in.Chunks["auxi"] = auxi
+	//   in.Chunks["auxi"] = chunk
 
 	// Compute total expected file size
 	fs := uint64(binary.Size(&FileHeader{}))
