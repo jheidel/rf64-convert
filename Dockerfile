@@ -6,6 +6,8 @@ FROM golang:alpine AS builder-go
 # Copy all source files.
 WORKDIR /go/src/github.com/jheidel/rf64-convert/
 COPY . .
+# Needed for go's VCS build info.
+RUN apk add git
 # Build the executable.
 RUN go build
 RUN GOOS=windows GOARCH=amd64 go build
